@@ -6,16 +6,15 @@ BACKGROUND_COLOR = "#B1DDC6"
 window = Tk()
 window.title("Flash card game")
 
-# Create back image
-canvas = Canvas(width=800, height=800)
-back_image = PhotoImage(file="./images/card_back.png")
-canvas.create_image(400, 400, image=back_image)
-canvas.grid(column=0, row=1)
+# Create canvas
+canvas = Canvas(width=800, height=800, bg=BACKGROUND_COLOR)
+canvas.grid(column=1, row=1)
 # Create front image
-front_image = PhotoImage(file="./images/card_front.png")
-canvas.create_image(400, 400, image=front_image)
-canvas.grid(column=0, row=1, ipadx=50, ipady=50)
-# Create
+front_image = ImageTk.PhotoImage(Image.open("./images/card_front.png"))
+front_label = Label(window, bg=BACKGROUND_COLOR, image=front_image)
+front_label.grid(column=1, row=1, ipadx=50, ipady=50)
+
+
 
 
 window.mainloop()
