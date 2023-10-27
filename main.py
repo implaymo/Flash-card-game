@@ -7,27 +7,36 @@ BACKGROUND_COLOR = "#B1DDC6"
 # Setup window
 window = Tk()
 window.title("Flash card game")
-window.configure(bg=BACKGROUND_COLOR)
+window.configure(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
 #----------- SETUP UI ------------#
+
 # Create canvas
 canvas = Canvas(width=800, height=526, bg=BACKGROUND_COLOR)
-canvas.grid(column=0, row=0, ipadx=50, ipady=50, columnspan=2)
+canvas.config(highlightthickness=0)
+canvas.pack()
 
 # Create Front card
 front_image = ImageTk.PhotoImage(Image.open("./images/card_front.png"))
-front_label = Label(window, bg=BACKGROUND_COLOR, image=front_image)
-front_label.grid(column=0, row=0, ipadx=50, ipady=50, columnspan=2, rowspan=2)
+canvas.create_image(400, 256, image=front_image)
+canvas.pack()
 
 # Create WRONG button
 wrong_image = ImageTk.PhotoImage(Image.open("./images/wrong.png"))
-wrong_label = Label(window, bg=BACKGROUND_COLOR, image=wrong_image)
-wrong_label.grid(column=0, row=1, ipadx=50, ipady=50, rowspan=2)
+canvas.create_image(200, 570, image=wrong_image)
+canvas.pack(ipady=50)
 
 # Create RIGHT button
 right_button = ImageTk.PhotoImage(Image.open("./images/right.png"))
-right_label = Label(window, bg=BACKGROUND_COLOR, image=right_button)
-right_label.grid(column=1, row=1, ipadx=50, ipady=50, rowspan=2)
+canvas.create_image(600, 570, image=right_button)
+canvas.pack()
+
+# Language
+canvas.create_text(400, 150, text="French", fill="black", font=("Arial", 40, "italic"))
+
+
+# Word
+canvas.create_text(400, 263, text="WORD", fill="black", font=("Arial", 60, "bold"))
 
 
 window.mainloop()
