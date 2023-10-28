@@ -16,14 +16,14 @@ def french_card():
     canvas.itemconfig(text_word, text=random_word["French"])
     canvas.itemconfig(text_title, text="French")
     canvas.itemconfig(canvas_image, image=front_image)
-    window.after(3000)
+    window.after(3000, english_card)
 
 def english_card():
     canvas.itemconfig(canvas_image, image=back_image)
     random_word = random.choice(to_learn)
     canvas.itemconfig(text_word, text=random_word["English"])
     canvas.itemconfig(text_title, text="English")
-    window.after(3000)
+    window.after(3000, french_card)
 
 # Setup window
 window = Tk()
@@ -50,7 +50,7 @@ wrong_button.grid(column=0,row=1)
 
 # Create RIGHT button
 right_image = PhotoImage(file="images/right.png")
-right_button = Button(image=right_image, bg=BACKGROUND_COLOR, highlightthickness=0, command=english_card)
+right_button = Button(image=right_image, bg=BACKGROUND_COLOR, highlightthickness=0, command=french_card)
 right_button.grid(column=1, row=1)
 
 french_card()
