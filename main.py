@@ -5,11 +5,9 @@ import pandas
 
 
 BACKGROUND_COLOR = "#B1DDC6"
-random_word = ""
-
 
 def get_french_word():
-    global random_word
+
     # Opens CSV as a dataframe and gets it into a list of dictionaries
     csv_dataframe = pandas.read_csv("data/french_words.csv")
     data_dict = csv_dataframe.to_dict('records')
@@ -19,7 +17,6 @@ def get_french_word():
         words_list.append(dictionary["French"])
     canvas.delete("text")
     random_word = random.choice(words_list)
-
     # Word text
     canvas.create_text(400, 263, text=random_word, fill="black", font=("Arial", 60, "bold"), tags="text")
     # Language Type
@@ -35,6 +32,7 @@ window.configure(padx=50, pady=50, bg=BACKGROUND_COLOR)
 canvas = Canvas(width=800, height=526, bg=BACKGROUND_COLOR)
 canvas.config(highlightthickness=0)
 # Create Front card
+
 front_image = ImageTk.PhotoImage(Image.open("./images/card_front.png"))
 canvas.create_image(400, 263, image=front_image)
 canvas.grid(column=0, row=0, columnspan=2)
@@ -52,6 +50,10 @@ wrong_button.grid(column=0,row=1)
 right_image = PhotoImage(file="images/right.png")
 right_button = Button(image=right_image, bg=BACKGROUND_COLOR, highlightthickness=0, command=get_french_word)
 right_button.grid(column=1, row=1)
+
+
+
+
 
 
 
