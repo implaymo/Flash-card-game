@@ -4,7 +4,7 @@ import pandas
 
 
 BACKGROUND_COLOR = "#B1DDC6"
-words_dict = []
+words_list = []
 
 # Opens CSV as a dataframe and gets it into a list of dictionaries
 data = pandas.read_csv("data/french_words.csv")
@@ -12,22 +12,26 @@ to_learn = data.to_dict(orient='records')
 
 
 def french_card():
+    # Gets french word
+    global flip_timer
+    # Cancels timer so it waits 3 seconds everytime i click a butto n
+    window.after_cancel(flip_timer)
     random_dict = random.choice(to_learn)
     canvas.itemconfig(text_word, fill="black", text=random_dict["French"])
     canvas.itemconfig(text_title, fill="black", text="French")
     canvas.itemconfig(canvas_image, image=front_image)
-    words_dict.append(random_dict)
-    window.after(3000, english_card)
-
-
+    words_list.append(random_dict)
+    flip_timer= window.after(3000, english_card)
 
 def english_card():
-    global words_dict
+    # Changes words and background to English
+    global words_list
     canvas.itemconfig(canvas_image, image=back_image)
     canvas.itemconfig(text_title, fill="white", text="English")
-    canvas.itemconfig(text_word, fill="white", text=words_dict[0]["English"])
-    words_dict = []
-    window.after(3000, french_card)
+    # Gets the english word inside of words_list
+    canvas.itemconfig(text_word, fill="white", text=words_list[0]["English"])
+    words_list = []
+
 
 
 # Setup window
@@ -35,6 +39,7 @@ window = Tk()
 window.title("Flash card game")
 window.configure(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
+flip_timer = window.after(3000, english_card)
 
 # Create canvas
 canvas = Canvas(width=800, height=526)
