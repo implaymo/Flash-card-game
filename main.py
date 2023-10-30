@@ -3,8 +3,9 @@ import random
 import pandas
 
 
+
 BACKGROUND_COLOR = "#B1DDC6"
-words_list = []
+random_dict = {}
 
 # Opens CSV as a dataframe and gets it into a list of dictionaries
 data = pandas.read_csv("data/french_words.csv")
@@ -12,25 +13,38 @@ to_learn = data.to_dict(orient='records')
 
 
 def french_card():
-    # Gets french word
-    global flip_timer
-    # Cancels timer so it waits 3 seconds everytime i click a butto n
+    # Gets French word
+    global random_dict, flip_timer
+    # Cancels timer, so it waits 3 seconds everytime I click a button
     window.after_cancel(flip_timer)
     random_dict = random.choice(to_learn)
     canvas.itemconfig(text_word, fill="black", text=random_dict["French"])
     canvas.itemconfig(text_title, fill="black", text="French")
     canvas.itemconfig(canvas_image, image=front_image)
-    words_list.append(random_dict)
-    flip_timer= window.after(3000, english_card)
+    flip_timer = window.after(3000, english_card)
+
 
 def english_card():
     # Changes words and background to English
-    global words_list
     canvas.itemconfig(canvas_image, image=back_image)
     canvas.itemconfig(text_title, fill="white", text="English")
-    # Gets the english word inside of words_list
-    canvas.itemconfig(text_word, fill="white", text=words_list[0]["English"])
-    words_list = []
+    # Gets the english word inside words_list
+    canvas.itemconfig(text_word, fill="white", text=random_dict["English"])
+
+
+def right_answer():
+    french_card()
+    try:
+        # Open CSV file and removes words
+        new_file = pandas.read_csv("words_to_learn.csv")
+        to_learn.remove(random_dict)
+        df = pandas.DataFrame(to_learn)
+        df.to_csv("words_to_learn.csv", index=False)
+    except FileNotFoundError:
+        # Creates file in the case it doesn't exist
+        to_learn.remove(random_dict)
+        df = pandas.DataFrame(to_learn)
+        df.to_csv("words_to_learn.csv", index=False)
 
 
 
@@ -60,9 +74,12 @@ wrong_button.grid(column=0,row=1)
 
 # Create RIGHT button
 right_image = PhotoImage(file="images/right.png")
-right_button = Button(image=right_image, bg=BACKGROUND_COLOR, highlightthickness=0, command=french_card)
+right_button = Button(image=right_image, bg=BACKGROUND_COLOR,
+                      highlightthickness=0, command=right_answer)
 right_button.grid(column=1, row=1)
 
+
+# Calls first card
 french_card()
 
 window.mainloop()
