@@ -33,18 +33,24 @@ def english_card():
 
 
 def right_answer():
-    french_card()
     try:
         # Open CSV file and removes words
         new_file = pandas.read_csv("words_to_learn.csv")
-        to_learn.remove(random_dict)
-        df = pandas.DataFrame(to_learn)
-        df.to_csv("words_to_learn.csv", index=False)
+        updated_data = new_file.to_dict(orient='records')
     except FileNotFoundError:
         # Creates file in the case it doesn't exist
-        to_learn.remove(random_dict)
-        df = pandas.DataFrame(to_learn)
+        if random_dict in to_learn:
+            to_learn.remove(random_dict)
+        updated_data = to_learn
+        df = pandas.DataFrame(updated_data)
         df.to_csv("words_to_learn.csv", index=False)
+    else:
+        if random_dict in updated_data:
+            updated_data.remove(random_dict)
+        df = pandas.DataFrame(updated_data)
+        df.to_csv("words_to_learn.csv", index=False)
+    finally:
+        french_card()
 
 
 
